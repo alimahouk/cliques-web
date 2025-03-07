@@ -1,0 +1,14 @@
+{% macro render(ProtocolKey, post, thread, user) -%}
+<li id="{{ post[ProtocolKey.POST_ID] }}" {% if user and user[ProtocolKey.USER_ID] == thread[ProtocolKey.AUTHOR][ProtocolKey.USER_ID] %}class="op"{% endif %}>
+        <address class="author">@{{ post[ProtocolKey.AUTHOR][ProtocolKey.ALIAS] }}</address>
+        {% if post[ProtocolKey.AUTHOR][ProtocolKey.USER_ID] == thread[ProtocolKey.AUTHOR][ProtocolKey.USER_ID] %}
+        <span class="authorMarker op">[OP]</span>
+        {% endif %}
+        <a href="/scape?threadid={{ post[ProtocolKey.THREAD_ID] }}#{{ post[ProtocolKey.POST_ID] }}"><time datetime="{{ post[ProtocolKey.CREATION_DATE] }}">{{ post[ProtocolKey.CREATION_DATE] }}</time></a>
+        <p dir="auto">
+                {%- autoescape false -%}
+                {{ post[ProtocolKey.POST_BODY] }}
+                {%- endautoescape -%}
+        </p>
+</li>
+{%- endmacro %}

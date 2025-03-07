@@ -1,0 +1,76 @@
+{% extends "pages/base.html" %}
+
+{% set loginGotoName = "threadid" %}
+{% set loginGotoValue = thread[ProtocolKey.THREAD_ID] %}
+{% set showLoginButton = True %}
+
+{% block headTags %}
+<title>{{ thread[ProtocolKey.THREAD_TITLE_RAW] }} | Cliques</title>
+{% if thread[ProtocolKey.THREAD_DESCRIPTION] %}
+<meta name="description" content="{{ thread[ProtocolKey.THREAD_DESCRIPTION_RAW] }}">
+{% endif %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/home.css') }}">
+{% endblock %}
+
+{% block content %}
+{% import "elements/post.html" as postTemplate %}
+{% import "elements/thread.html" as threadTemplate %}
+
+{{ threadTemplate.render(ProtocolKey, thread, user) }}
+<hr>
+<section id="replies">
+        <h3>
+                {{- thread[ProtocolKey.POST_COUNT] }}
+                {% if thread[ProtocolKey.POST_COUNT] == 1 %}
+                Reply
+                {%- else -%}
+                replies
+                        {% if thread[ProtocolKey.POST_COUNT] > 1 %}
+                                from {{ thread[ProtocolKey.PARTICIPANT_COUNT] }}
+                                {% if thread[ProtocolKey.PARTICIPANT_COUNT] == 1 %}
+                                person
+                                {%- else -%}
+                                people
+                                {%- endif -%}
+                        {%- endif -%}
+                {%- endif -%}
+        </h3>
+        {% if user %}
+        <form class="pad" name="postForm" action="/submit/post" method="POST">
+                {% if submissionErrorMessage %}
+                <p class="formError">{{ submissionErrorMessage }}</p>
+                {% endif %}
+                <textarea name="postBody" rows="5" dir="auto" maxlength="10000" placeholder="your thoughts…" required></textarea>
+                <input type="hidden" name="groupID" value="{{ thread[ProtocolKey.GROUP_ID] }}">
+                <input type="hidden" name="threadID" value="{{ thread[ProtocolKey.THREAD_ID] }}">
+                <div class="panel">
+                        <div class="flexibleSpace"></div>
+                        <button type="submit">Submit</button>
+                        <div class="flexibleSpace"></div>
+                </div>
+        </form>
+        {% else %}
+        <p class="loginNotice"><a href="/login?threadid={{ thread[ProtocolKey.THREAD_ID] }}">Log in or register</a> to participate in this dialogue. It takes a second; all you need is a username.</p>
+        {% endif %}
+        <ol>
+                {% for post in thread[ProtocolKey.POSTS] %}
+                {{ postTemplate.render(ProtocolKey, post, thread, user) }}
+                {% endfor %}
+        </ol>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript" src="{{ url_for('static', filename='js/time.js') }}"></script>
+<script type="text/javascript">
+        const timeTags = document.getElementsByTagName("time");
+        for (const tag of timeTags) {
+                const timeUTCStr = tag.getAttribute("datetime");
+                const timeStr = timestamp_str(timeUTCStr, false);
+                const timeStrRelative = timestamp_str(timeUTCStr, true);
+
+                tag.innerHTML = timeStrRelative;
+                tag.setAttribute("title", timeStr);
+        }
+</script>
+{% endblock %}

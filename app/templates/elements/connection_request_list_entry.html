@@ -1,0 +1,16 @@
+{% macro render(ProtocolKey, request, user) -%}
+<li id="{{ request[ProtocolKey.USER_ID] }}">
+        {% if request[ProtocolKey.NAME] %}
+        <h3 dir="auto">{{ request[ProtocolKey.NAME] }}</h3>
+        {% endif %}
+        <h4>@{{ request[ProtocolKey.ALIAS] }}</h4>
+        <form action="/connections/accept" method="POST">
+                <input type="hidden" name="userID" value="{{ request[ProtocolKey.USER_ID] }}">
+                <button type="submit">Accept</button>
+        </form>
+        <form action="/connections/remove" method="POST">
+                <input type="hidden" name="userID" value="{{ request[ProtocolKey.USER_ID] }}">
+                <button type="submit">Decline</button>
+        </form>
+</li>
+{%- endmacro %}

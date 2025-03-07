@@ -1,0 +1,33 @@
+{% extends "pages/base.html" %}
+
+{% set showLoginButton = True %}
+
+{% block headTags %}
+<title>About Cliques</title>
+{% endblock %}
+
+{% block content %}
+<article>
+        <h1>About the Project</h1>
+        <p>Cliques is an experiment in both computational complexity and human interaction in social
+                groups. Rather than having explicitly formed groups where people get added (often
+                without their permission) or invited to join and they may not know everyone in that
+                group, Cliques is based on the idea that the connections themselves between people
+                might represent implicit "social spaces" that can be both more intimate and meaningful than
+                groups where members are explicitly added.</p>
+        <h4>What's the "computational complexity" part of this?</h4>
+        <p>Good question! Groups where each member knows every other person in that group are called
+                <em>cliques</em>. Figuring out the cliques present in a group <a
+                        href="https://en.wikipedia.org/wiki/Clique_problem" target="_blank">becomes
+                        computationally challenging</a> the bigger the group gets. Cliques are also
+                dynamic; as people form new connections or break old ones, cliques change. Whenever any
+                two people connect on Cliques, they are automatically placed in a group that
+                represents the clique formed by their new connection and all the people they both know
+                mutually.</p>
+        <p>This also involves a host of other challenges when it comes to managing the content that gets created within
+                each clique as it mutates over time, and connections are made or broken.</p>
+        <h2>About Me</h2>
+        <p>My name's Ali. I'm a computer science postgrad student,
+                and I like building tools that help bring people together.</p>
+</article>
+{% endblock %}

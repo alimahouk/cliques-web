@@ -1,0 +1,74 @@
+fieldset {
+	padding: 10pt 20pt;
+}
+
+legend {
+	text-transform: uppercase;
+}
+
+footer, nav {
+	margin: 20pt 0;
+	text-align: center;
+}
+
+footer {
+	color: #ccc;
+}
+
+footer ul, nav ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+footer li, nav li {
+	display: inline-block;
+	margin: 0 5pt;
+}
+
+h1, h2 {
+	margin: 10pt;
+}
+
+h1 {
+	text-align: center;
+}
+
+main {
+	margin: 20pt auto;
+	max-width: 400pt;
+}
+
+main form {
+	display: flex;
+	margin: 20pt auto;
+	max-width: 220pt;
+}
+
+main form button, main form input[type=text], main form textarea {
+	box-sizing: border-box;
+	display: block;
+	font-size: 12pt;
+	margin: 10pt auto;
+	width: 100%;
+}
+
+main form input[type=text], main form textarea {
+	border: 1pt solid #ccc;
+	padding: 5pt;
+}
+
+main form button {
+	margin-top: 20pt;
+}
+
+main form textarea {
+	min-height: 70pt;
+}
+
+.formError {
+	background-color: #ff8080;
+	border-bottom: 1pt solid #f00;
+	padding: 5pt;
+	text-align: center;
+}

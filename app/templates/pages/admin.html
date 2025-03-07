@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+
+<head>
+        <title>Cliques</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+        <link rel="shortcut icon" href="{{ url_for('static', filename='img/app/favicon.png') }}" />
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/admin.css') }}" />
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/base.css') }}" />
+</head>
+
+<body>
+        <nav>
+                <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/logout">Logout</a></li>
+                </ul>
+        </nav>
+        <main>
+                <h1>Admin Console</h1>
+                <section>
+                        <h2>Scape Management</h2>
+                        <ul>
+                                <li>{{ threadCount }} threads created.</li>
+                                <li>{{ postCount }} posts created.</li>
+                                <li>{{ commentCount }} comments created.</li>
+                        </ul>
+                        <form action="/admin/threads/erase" method="POST">
+                                <fieldset>
+                                        <legend>Erase Thread</legend>
+                                        <input name="threadID" type="text" placeholder="Thread ID" required />
+                                        <button type="submit">Erase</button>
+                                </fieldset>
+                        </form>
+                        <form action="/admin/threads/ghost" method="POST">
+                                <fieldset>
+                                        <legend>Ghost Thread</legend>
+                                        <input name="threadID" type="text" placeholder="Thread ID" required />
+                                        <input type="radio" id="radioGhostThread" name="ghosted" value="1" checked>
+                                        <label for="radioGhostThread">Ghost</label>
+                                        <input type="radio" id="radioUnghostThread" name="ghosted" value="0">
+                                        <label for="radioUnghostThread">Unghost</label>
+                                        <button type="submit">Update Status</button>
+                                </fieldset>
+                        </form>
+                        <form action="/admin/threads/lock" method="POST">
+                                <fieldset>
+                                        <legend>Lock Thread</legend>
+                                        <input name="threadID" type="text" placeholder="Thread ID" required />
+                                        <input type="radio" id="radioLockThread" name="locked" value="1" checked>
+                                        <label for="radioLockThread">Lock</label>
+                                        <input type="radio" id="radioUnlockThread" name="locked" value="0">
+                                        <label for="radioUnlockThread">Unlock</label>
+                                        <button type="submit">Update Status</button>
+                                </fieldset>
+                        </form>
+                        <form action="/admin/threads/modify" method="POST">
+                                <fieldset>
+                                        <legend>Modify Thread</legend>
+                                        <input name="threadID" type="text" placeholder="Thread ID" required />
+                                        <input name="threadTitle" type="text" placeholder="Title" required />
+                                        <textarea name="threadDescription" placeholder="Description (optional)"></textarea>
+                                        <button type="submit">Modify</button>
+                                </fieldset>
+                        </form>
+                        <form action="/admin/posts/erase" method="POST">
+                                <fieldset>
+                                        <legend>Erase Post</legend>
+                                        <input name="postID" type="text" placeholder="Post ID" required />
+                                        <button type="submit">Erase</button>
+                                </fieldset>
+                        </form>
+                        <form action="/admin/comments/erase" method="POST">
+                                <fieldset>
+                                        <legend>Erase Comment</legend>
+                                        <input name="commentID" type="text" placeholder="Comment ID" required />
+                                        <button type="submit">Erase</button>
+                                </fieldset>
+                        </form>
+                </section>
+                <section>
+                        <h2>User Management</h2>
+                        <ul>
+                                <li>{{ userCount }} users.</li>
+                                <li>{{ userOnlineCount }} online right now.</li>
+                        </ul>
+                        <form action="/admin/users/delete" method="POST">
+                                <fieldset>
+                                        <legend>Delete User</legend>
+                                        <input name="alias" type="text" placeholder="Username" />
+                                        <input name="userID" type="text" placeholder="User ID" />
+                                        <button type="submit">Delete</button>
+                                </fieldset>
+                        </form>
+                        <form action="/admin/users/suspend" method="POST">
+                                <fieldset>
+                                        <legend>Suspend User</legend>
+                                        <input name="alias" type="text" placeholder="Username" />
+                                        <input name="userID" type="text" placeholder="User ID" />
+                                        <input type="radio" id="radioSuspend" name="suspended" value="1" checked>
+                                        <label for="radioSuspend">Suspend</label>
+                                        <input type="radio" id="radioUnsuspend" name="suspended" value="0">
+                                        <label for="radioUnsuspend">Unsuspend</label>
+                                        <button type="submit">Update Status</button>
+                                </fieldset>
+                        </form>
+                        <form action="/admin/users/update" method="POST">
+                                <fieldset>
+                                        <legend>Update User Profile</legend>
+                                        <input name="userID" type="text" placeholder="User ID" required />
+                                        <input name="name" type="text" placeholder="Full name" required />
+                                        <input name="alias" type="text" placeholder="Username" required />
+                                        <button type="submit">Update</button>
+                                </fieldset>
+                        </form>
+                </section>
+        </main>
+        <footer>
+                <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/logout">Logout</a></li>
+                </ul>
+        </footer>
+</body>
+
+</html>

@@ -1,0 +1,30 @@
+{% extends "pages/base.html" %}
+
+{% set showLoginButton = True %}
+
+{% block headTags %}
+<title>Contact Us | Cliques</title>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/home.css') }}">
+{% endblock %}
+
+{% block content %}
+<article>
+        <h1>Contact Us</h1>
+        <p>Suggestions? Complaints? Something not working properly?</p>
+        <form class="pad" name="contactForm" class="pad" action="/contact" method="POST">
+                <fieldset>
+                        <legend class="windowTitle">Contact</legend>
+                        <div class="formError hidden"></div>
+                        <label for="emailField">Email:</label>
+                        <input id="emailField" name="replyTo" type="email" placeholder="your email address" required autofocus />
+                        <label for="messageField">Message:</label>
+                        <textarea id="messageField" name="message" rows="5" dir="auto" maxlength="10000" required></textarea>
+                        <div class="panel">
+                                <div class="flexibleSpace"></div>
+                                <button type="submit">Submit</button>
+                                <div class="flexibleSpace"></div>
+                        </div>
+                </fieldset>
+        </form>
+</article>
+{% endblock %}

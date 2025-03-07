@@ -1,0 +1,45 @@
+{% macro render(ProtocolKey, ThreadType, thread, user) -%}
+<li id="{{ thread[ProtocolKey.THREAD_ID] }}">
+        {% if thread[ProtocolKey.THREAD_TITLE] %}
+        <a class="title" href="/scape?threadid={{ thread[ProtocolKey.THREAD_ID] }}">
+                {%- autoescape false -%}
+
+                <h3 dir="auto">{{ thread[ProtocolKey.THREAD_TITLE] }}</h3>
+
+                {%- endautoescape -%}
+        </a>
+        {%- endif -%}
+        <time datetime="{{ thread[ProtocolKey.CREATION_DATE] }}">{{ thread[ProtocolKey.CREATION_DATE] }}</time>
+        {% if thread[ProtocolKey.THREAD_TYPE] == ThreadType.PLAIN %}
+        • <a href="/scape?threadid={{ thread[ProtocolKey.THREAD_ID] }}#replies">
+                {{- thread[ProtocolKey.POST_COUNT] }}
+                {% if thread[ProtocolKey.POST_COUNT] == 1 %}
+                reply
+                {%- else -%}
+                replies
+                        {% if thread[ProtocolKey.POST_COUNT] > 1 %}
+                                from {{ thread[ProtocolKey.PARTICIPANT_COUNT] }}
+                                {% if thread[ProtocolKey.PARTICIPANT_COUNT] == 1 %}
+                                person
+                                {%- else -%}
+                                people
+                                {%- endif -%}
+                        {%- endif -%}
+                {%- endif -%}
+        </a>
+        {%- endif -%}
+        {% if thread[ProtocolKey.THREAD_DESCRIPTION] %}
+        <p class="description" dir="auto">
+                {%- autoescape false -%}
+
+                {%- if thread[ProtocolKey.THREAD_TYPE] == ThreadType.PLAIN -%}
+                {{ thread[ProtocolKey.THREAD_DESCRIPTION] }}
+                {%- elif thread[ProtocolKey.THREAD_TYPE] == ThreadType.CONNECTION_UPDATE -%}
+                {{ thread[ProtocolKey.AUTHOR] ~ " " ~ thread[ProtocolKey.THREAD_DESCRIPTION] }}
+                {%- endif -%}
+                
+                {%- endautoescape -%}
+        </p>
+        {% endif %}
+</li>
+{%- endmacro %}

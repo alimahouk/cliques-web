@@ -1,0 +1,27 @@
+{% extends "pages/base.html" %}
+
+{% block headTags %}
+<title>Submit | Cliques</title>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/home.css') }}">
+{% endblock %}
+
+{% block content %}
+<section>
+        <h2>Submit</h2>
+        <form class="pad" name="submitThreadForm" action="/submit/thread" method="POST">
+                <input type="hidden" name="groupID" value="{{ groupID }}">
+                {% if submissionErrorMessage %}
+                <p class="formError">{{ submissionErrorMessage }}</p>
+                {% endif %}
+                <label for="titleField">Title:</label>
+                <input id="titleField" name="threadTitle" type="text" dir="auto" maxlength="140" required autofocus>
+                <label for="descriptionField">Description:</label>
+                <textarea id="descriptionField" name="threadDescription" rows="5" cols="50" dir="auto" maxlength="10000" placeholder="(optional)"></textarea>
+                <div class="panel">
+                        <div class="flexibleSpace"></div>
+                        <button type="submit">Submit</button>
+                        <div class="flexibleSpace"></div>
+                </div>
+        </form>
+</section>
+{% endblock %}

@@ -1,0 +1,7 @@
+{% macro render(ProtocolKey, room, user) -%}
+<li id="{{ room[ProtocolKey.ROOM_ID] }}">
+        <a href="/lr/{{ room[ProtocolKey.ROOM_ID] }}">
+                <h3>{{ room[ProtocolKey.NAME] }}</h3>
+        </a>
+</li>
+{%- endmacro %}

@@ -1,0 +1,33 @@
+{% extends "pages/base.html" %}
+
+{% block headTags %}
+<title>Friend Requests | Cliques</title>
+{% endblock %}
+
+{% block nav %}
+{% endblock %}
+
+{% block content %}
+
+{% import "elements/connection_request_list_entry.html" as connectionRequestEntryTemplate %}
+
+<section id="pendingRequests">
+        <h2>Friend Requests</h2>
+        <form action="/connections/add" method="GET">
+                <div class="panel">
+                        <div class="flexibleSpace"></div>
+                        <button type="submit">Add a Friend</button>
+                        <div class="flexibleSpace"></div>
+                </div>
+        </form>
+        {% if connectionRequestsReceived and connectionRequestsReceived|length > 0 %}
+        <ol>
+                {% for request in connectionRequestsReceived %}
+                {{ connectionRequestEntryTemplate.render(ProtocolKey, request, user) }}
+                {% endfor %}
+        </ol>
+        {% else %}
+        <p>No pending friend requests!</p>
+        {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,7 @@
+{% macro render(ProtocolKey, clique, user) -%}
+<li id="{{ clique[ProtocolKey.CLIQUE_ID] }}">
+        {%- for member in clique[ProtocolKey.MEMBERS] -%}
+        <a class="member" href="/clique?cliqueid={{ clique[ProtocolKey.CLIQUE_ID] }}">@{{ member[ProtocolKey.ALIAS] }}</a>
+        {% endfor %}
+</li>
+{%- endmacro %}

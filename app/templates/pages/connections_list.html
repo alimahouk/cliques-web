@@ -1,0 +1,53 @@
+{% extends "pages/base.html" %}
+
+{% block headTags %}
+<title>Friends List | Cliques</title>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/home.css') }}">
+{% endblock %}
+
+{% block nav %}
+{% endblock %}
+
+{% block content %}
+
+{% import "elements/connection_list_entry.html" as connectionEntryTemplate %}
+
+<section id="dashboard">
+        <h2>Dashboard</h2>
+        <form action="/connections/add" method="GET">
+                <div class="panel">
+                        <div class="flexibleSpace"></div>
+                        <button type="submit">Add a Friend</button>
+                        <div class="flexibleSpace"></div>
+                </div>
+        </form>
+        <ul>
+                <li id="connectionRequestsReceived">
+                        {% if connectionRequestsReceivedCount == 0 %}
+                        0 friend requests
+                        {% else %}
+                        <a href="/connections/requests">
+                                {{- connectionRequestsReceivedCount }} friend
+                                {% if connectionRequestsReceivedCount == 1 %}
+                                request
+                                {% else %}
+                                requests
+                                {%- endif -%}
+                        </a>
+                        {%- endif -%}
+                </li>
+        </ul>
+</section>
+<section id="connectionsList">
+        <h2>Friends List</h2>
+        {% if connections and connections|length > 0 %}
+        <ol id="connections">
+                {% for connection in connections %}
+                {{ connectionEntryTemplate.render(ProtocolKey, connection, user) }}
+                {% endfor %}
+        </ol>
+        {% else %}
+        <p>No friends…yet!</p>
+        {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% macro render(ProtocolKey, thread, user) -%}
+<article id="{{ thread[ProtocolKey.THREAD_ID] }}">
+        {%- autoescape false -%}
+        <h2 dir="auto">{{ thread[ProtocolKey.THREAD_TITLE] }}</h2>
+        {%- endautoescape -%}
+        <a href="/scape?threadid={{ thread[ProtocolKey.THREAD_ID] }}"><time datetime="{{ thread[ProtocolKey.CREATION_DATE] }}">{{ thread[ProtocolKey.CREATION_DATE] }}</time></a>
+        {% if thread[ProtocolKey.THREAD_DESCRIPTION] %}
+        <p dir="auto">
+                {%- autoescape false -%}
+                {{ thread[ProtocolKey.THREAD_DESCRIPTION] }}
+                {%- endautoescape -%}
+        </p>
+        {% endif %}
+</article>
+{%- endmacro %}

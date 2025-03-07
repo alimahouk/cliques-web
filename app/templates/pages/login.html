@@ -1,0 +1,188 @@
+{% extends "pages/base.html" %}
+
+{% set showLoginButton = False %}
+
+{% block headTags %}
+<title>Login | Cliques</title>
+<link rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/home.css') }}">
+{% endblock %}
+
+{% block nav %}
+{% endblock %}
+
+{% block content %}
+<section id="entryForms">
+        <form name="loginForm"
+              class="pad"
+              action="/login?{% if inviteCode is not none %}&invite={{ inviteCode }}{% endif %}{% if threadID is not none %}&threadid={{ threadID }}{% endif %}"
+              method="POST">
+                <fieldset>
+                        <legend class="windowTitle">Login</legend>
+                        {% if loginErrorMessage %}
+                        <div class="formError">{{ loginErrorMessage }}</div>
+                        {% endif -%}
+                        <label for="loginAliasField">Username:</label>
+                        <input id="loginAliasField"
+                               name="alias"
+                               type="text"
+                               dir="auto"
+                               minlength="2"
+                               {%
+                               if
+                               loginAlias
+                               %}
+                               value="{{loginAlias}}"
+                               {%
+                               endif
+                               %}
+                               required
+                               autofocus>
+                        <label for="loginPasswordField">Password:</label>
+                        <input id="loginPasswordField"
+                               name="passwordPlain"
+                               type="password"
+                               dir="auto"
+                               minlength="8"
+                               required>
+                        <input name="password"
+                               type="hidden">
+                        <a href="/forgot">Forgot your password?</a>
+                        <div class="panel">
+                                <div class="flexibleSpace"></div>
+                                <button type="submit">Login</button>
+                                <div class="flexibleSpace"></div>
+                        </div>
+                </fieldset>
+        </form>
+        {% if (signupFormStatus == SignupFormStatus.INVITE and inviteCode is not none) or signupFormStatus == SignupFormStatus.OPEN %}
+        <form name="signupForm"
+              class="pad"
+              action="/signup?{% if inviteCode is not none %}&invite={{ inviteCode }}{% endif %}{% if threadID is not none %}&threadid={{ threadID }}{% endif %}"
+              method="POST">
+                <fieldset>
+                        <legend class="windowTitle">Register</legend>
+                        {% if signupErrorMessage %}
+                        <div class="formError">{{ signupErrorMessage }}</div>
+                        {% endif -%}
+                        <p class="note">Share your username with your friends so that they can add you.</p>
+                        <label for="signupNameField">Full name:</label>
+                        <input id="signupNameField"
+                               name="name"
+                               type="text"
+                               dir="auto"
+                               placeholder="(not shown publicly; helps friends recognise you)"
+                               autocomplete="off"
+                               {%
+                               if
+                               signupName
+                               %}
+                               value="{{signupName}}"
+                               {%
+                               endif
+                               %}>
+                        <label for="signupEmailField">Email:</label>
+                        <input id="signupEmailField"
+                               name="email"
+                               type="email"
+                               dir="auto"
+                               placeholder="(optional; used in case you forget your password)"
+                               {%
+                               if
+                               signupEmail
+                               %}
+                               value="{{signupEmail}}"
+                               {%
+                               endif
+                               %}>
+                        <label for="signupAliasField"
+                               class="required">Username:<span>*</span></label>
+                        <input id="signupAliasField"
+                               name="alias"
+                               type="text"
+                               dir="auto"
+                               placeholder="(no spaces)"
+                               autocomplete="off"
+                               minlength="2"
+                               {%
+                               if
+                               signupAlias
+                               %}
+                               value="{{signupAlias}}"
+                               {%
+                               endif
+                               %}
+                               required>
+                        <label for="signupPasswordField"
+                               class="required">Password:<span>*</span></label>
+                        <input id="signupPasswordField"
+                               name="passwordPlain"
+                               type="password"
+                               dir="auto"
+                               placeholder="(8 characters min.)"
+                               autocomplete="new-password"
+                               minlength="8"
+                               required>
+                        <input name="password"
+                               type="hidden">
+                        <div class="panel">
+                                <div class="flexibleSpace"></div>
+                                <button type="submit">Create Account</button>
+                                <div class="flexibleSpace"></div>
+                        </div>
+                        <p class="note">By registering, you agree to the <a href="https://about.alimahouk.com/terms">Terms of
+                                        Use</a>.</p>
+                </fieldset>
+        </form>
+        {% elif signupFormStatus == SignupFormStatus.INVITE %}
+        <p>Don't have an account? You need an invitation from an existing member to join!</p>
+        {% else %}
+        <p>New registrations are closed at this time. Check back later!</p>
+        {% endif %}
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+        function hexString(buffer) {
+                const byteArray = new Uint8Array(buffer);
+                const hexCodes = [...byteArray].map(value => {
+                        const hexCode = value.toString(16);
+                        const paddedHexCode = hexCode.padStart(2, "0");
+                        return paddedHexCode;
+                });
+                return hexCodes.join("");
+        }
+
+        function digestMessage(message) {
+                const encoder = new TextEncoder();
+                const data = encoder.encode(message);
+                return window.crypto.subtle.digest("SHA-256", data);
+        }
+
+        const loginForm = document.loginForm;
+        if (loginForm) {
+                loginForm.onsubmit = function () {
+                        const password = loginForm.passwordPlain.value;
+                        digestMessage(password).then(digestValue => {
+                                loginForm.password.value = hexString(digestValue);
+                                loginForm.submit();
+                        });
+                        return false;
+                }
+        }
+
+        const signupForm = document.signupForm;
+        if (signupForm) {
+                signupForm.onsubmit = function () {
+                        const password = signupForm.passwordPlain.value;
+                        digestMessage(password).then(digestValue => {
+                                signupForm.password.value = hexString(digestValue);
+                                signupForm.submit();
+                        });
+                        return false;
+                }
+        }
+</script>
+{% endblock %}

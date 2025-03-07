@@ -1,0 +1,12 @@
+{% macro render(ProtocolKey, connection, user) -%}
+<li id="{{ connection[ProtocolKey.USER_ID] }}">
+        {% if connection[ProtocolKey.NAME] %}
+        <h3 class="name" dir="auto">{{ connection[ProtocolKey.NAME] }}</h3>
+        {% endif %}
+        <h4 class="alias">@{{ connection[ProtocolKey.ALIAS] }}</h4>
+        <form action="/connections/remove" method="POST">
+                <input type="hidden" name="userID" value="{{ connection[ProtocolKey.USER_ID] }}">
+                <button type="submit">Remove</button>
+        </form>
+</li>
+{%- endmacro %}

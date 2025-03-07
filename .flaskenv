@@ -1,0 +1,2 @@
+FLASK_APP=cliques.py
+FLASK_ENV=development

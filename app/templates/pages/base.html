@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+
+<head>
+        <meta charset="utf-8">
+        {% block headTags %}{% endblock %}
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+        <meta name="keywords" content="ali mahouk, groups, clique, submit, comment">
+        <link rel="shortcut icon" href="{{ url_for('static', filename='img/app/favicon.png') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/base.css') }}">
+</head>
+
+<body id="cliques" class="{%- if user -%} member {%- else -%} public {%- endif -%}">
+        <nav>
+                <div class="container">
+                        <ul id="mainNavigation">
+                                <li>
+                                        <a href="/"><span>Home</span></a>
+                                </li>
+                                <li>
+                                        <a href="/lr/list"><span>Living Rooms</span></a>
+                                </li>
+                                {% block nav %}{% endblock -%}
+                        </ul>
+                        <h1 id="logo">
+                                <a class="icon" href="/" title="Home"></a>
+                                <span class="text hidden">Cliques</span>
+                        </h1>
+                        {% if user %}
+                        <form name="logoutForm" action="/logout" method="GET">
+                                <label>@{{ user[ProtocolKey.ALIAS] }}</label>
+                                <button id="logoutButton" type="submit">Logout</button>
+                        </form>
+                        {% elif showLoginButton %}
+                        {# Every template that inherits from this layout should set this flag to true except for the login page itself. #}
+                        <form name="loginForm" action="/login" method="GET">
+                                <input type="hidden" {% if loginGotoName %}name="{{ loginGotoName }}" {% endif %}
+                                        {% if loginGotoValue %}value="{{ loginGotoValue }}" {% endif %}>
+                                <div class="panel">
+                                        <div class="flexibleSpace"></div>
+                                        <button type="submit">Login</button>
+                                </div>
+                        </form>
+                        {% endif %}
+                </div>
+        </nav>
+        {% if user is none %}
+        <h5 id="serviceDescription">Welcome! Cliques is a dialogue platform for groups, except you don't have to create or manage the groups yourself. Instead, Cliques
+                automatically detects when you connect with a group of people who all know each other and creates a private space for each group to talk.</h5>
+        {% endif %}
+        <hr>
+        <main>
+                {%- block content -%}{%- endblock -%}
+        </main>
+        <hr>
+        <footer>
+                <ul>
+                        <li><a href="https://about.alimahouk.com">About</a></li>
+                        <li><a href="https://about.alimahouk.com/contact">Contact</a></li>
+                        <li><a href="https://about.alimahouk.com/community">Guidelines</a></li>
+                        <li><a href="https://about.alimahouk.com/privacy">Privacy</a></li>
+                        <li><a href="https://about.alimahouk.com/terms">Terms</a></li>
+                </ul>
+        </footer>
+</body>
+
+{%- block scripts -%}{%- endblock -%}
+
+</html>

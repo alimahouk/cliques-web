@@ -1,0 +1,55 @@
+{% extends "pages/base.html" %}
+
+{% set showLoginButton = True %}
+
+{% block headTags %}
+<title>The {{ currentRoom[ProtocolKey.NAME] }} Living Room | Cliques</title>
+<meta name="description" content="A service that automatically detects when you connect with people who all know each other and creates private spaces for you all to talk.">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/home.css') }}">
+{% endblock %}
+
+{% block nav %}
+{% endblock %}
+
+{% block content %}
+{% import "elements/thread_list_entry.html" as threadEntryTemplate %}
+
+{% if user and homeRoom and currentRoom[ProtocolKey.ROOM_ID] == homeRoom[ProtocolKey.ROOM_ID] %}
+<form action="/submit/thread" method="GET">
+        <input type="hidden" name="groupid" value="{{ currentRoom[ProtocolKey.ROOM_ID] }}">
+        <div class="panel">
+                <div class="flexibleSpace"></div>
+                <button type="submit">Submit</button>
+                <div class="flexibleSpace"></div>
+        </div>
+</form>
+{% endif %}
+<section id="threads">
+        <h2>The Living Room</h2>
+        <h4 class="currentRoom">{{currentRoom[ProtocolKey.NAME]}}</h4>
+        {% if threads and threads|length > 0 %}
+        <ol>
+                {% for thread in threads %}
+                {{ threadEntryTemplate.render(ProtocolKey, ThreadType, thread, user) }}
+                {% endfor %}
+        </ol>
+        {% else %}
+        <p>Nothing here as of yet!</p>
+        {% endif %}
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript" src="{{ url_for('static', filename='js/time.js') }}"></script>
+<script type="text/javascript">
+        const timeTags = document.getElementsByTagName("time");
+        for (const tag of timeTags) {
+                const timeUTCStr = tag.getAttribute("datetime");
+                const timeStr = timestamp_str(timeUTCStr, false);
+                const timeStrRelative = timestamp_str(timeUTCStr, true);
+
+                tag.innerHTML = timeStrRelative;
+                tag.setAttribute("title", timeStr);
+        }
+</script>
+{% endblock %}

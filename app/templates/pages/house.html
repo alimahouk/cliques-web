@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+        <head>
+                <!--
+                        S C Λ P Ξ 
+                        H O V S Ξ
+                -->
+                <title>Cliques</title>
+                <meta charset="utf-8" />
+                <meta name="description" content="A service that automatically creates social groups when you connect with people who all know each other, allowing you all to communicate in realtime." />
+                <meta name="keywords" content="ali mahouk, groups, clique, submit, comment" />
+                <link rel="shortcut icon" href="{{ url_for('static', filename='img/app/favicon.png') }}" />
+                <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/base.css') }}" />
+                <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}" />
+        </head>
+        <body>
+                <main>
+                        <h1>Welcome to Cliques! <sup>ALPHA</sup></h1>
+                        <h3 id="description">This is a service that automatically creates social groups when you connect with people who all know each other, allowing you all to communicate in realtime.</h3>
+                        <section>
+                                <div id="screens">
+                                        <img id="cliquesScreen" src="{{ url_for('static', filename='img/marketing/screen_cliques.png') }}" />
+                                        <img id="dialogueScreen" src="{{ url_for('static', filename='img/marketing/screen_dialogue.png') }}" />
+                                </div>
+                                <div id="entryForms">
+                                        <form name="loginForm" action="/login{% if inviteCode is not none %}?invite={{ inviteCode }}{% endif %}" method="POST">
+                                                <fieldset>
+                                                        <legend class="windowTitle">Login</legend>
+                                                        <div class="formError hidden"></div>
+                                                        <input name="alias" type="text" placeholder="Username" required autofocus />
+                                                        <input name="password" type="password" placeholder="Password" required />
+                                                        <button type="submit">Go</button>
+                                                        {% if (signupStatus == signupStatusEnum.INVITE and inviteCode is not none) or signupStatus == signupStatusEnum.OPEN %}
+                                                        <span class="note">Don't have an account? <a href="#" id="signupLink">Let's make one for you!</a></span>
+                                                        {% else %}
+                                                        <span class="note">Don't have an account? You need an invitation from an existing member to join!</span>
+                                                        {% endif %}
+                                                </fieldset>
+                                        </form>
+                                        {% if (signupStatus == signupStatusEnum.INVITE and inviteCode is not none) or signupStatus == signupStatusEnum.OPEN %}
+                                        <form class="hidden" name="signupForm"
+                                                action="/signup{% if inviteCode is not none %}?invite={{ inviteCode }}{% endif %}" method="POST">
+                                                <fieldset>
+                                                        <legend class="windowTitle">Register</legend>
+                                                        <div class="formError hidden"></div>
+                                                        <span class="note upper">Share your username with others so that they can add you.</span>
+                                                        <input name="name" type="text" placeholder="Full name (not shown publicly)" autocomplete="off" />
+                                                        <input name="alias" type="text" placeholder="Username (no spaces)" autocomplete="off" required />
+                                                        <input name="password" type="password" placeholder="Password" autocomplete="new-password" required />
+                                                        <button type="submit">Join</button>
+                                                        <span class="note">By registering, you agree to the <a href="https://about.alimahouk.com/terms">Terms
+                                                                        of Use</a>.</span>
+                                                </fieldset>
+                                        </form>
+                                        {% endif %}
+                                </div>
+                        </section>
+                </main>
+                <footer>
+                        <ul>
+                                <li><a href="https://about.alimahouk.com">About</a></li>
+                                <li><a href="https://about.alimahouk.com/contact">Contact</a></li>
+                                <li><a href="https://about.alimahouk.com/privacy">Privacy</a></li>
+                                <li><a href="https://about.alimahouk.com/terms">Terms</a></li>
+                        </ul>
+                </footer>
+                <form name="cookieConsentForm" class="hidden">
+                        <span>Cliques uses cookies to help deliver the best user experience possible. By using the services or clicking "I Agree", you agree to the use of cookies. <a href="https://about.alimahouk.com/privacy">Learn more.</a></span>
+                        <button type="submit">I Agree</button>
+                </form>
+        </body>
+        <script src="{{ url_for('static', filename='js/forge-sha256.min.js') }}" type="text/javascript"></script>
+        <script src="{{ url_for('static', filename='js/main/constants.js') }}" type="text/javascript"></script>
+        <script src="{{ url_for('static', filename='js/index.js') }}" type="text/javascript"></script>
+        <script>
+                ui.bind();
+                forms.checkForErrors();
+        </script>
+</html>

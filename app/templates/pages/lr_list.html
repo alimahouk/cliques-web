@@ -1,0 +1,30 @@
+{% extends "pages/base.html" %}
+
+{% set showLoginButton = True %}
+
+{% block headTags %}
+<title>Living Rooms | Cliques</title>
+{% endblock %}
+
+{% block nav %}
+{% endblock %}
+
+{% block content %}
+{% import "elements/lr_list_entry.html" as roomEntryTemplate %}
+
+<section id="rooms">
+        <h2>Living Rooms</h2>
+        <p>Each country on Cliques has a Living Room, which is a public space where residents and visitors can share, converse,
+        and discover the local community. This feature is currently only available in select countries but more will be added
+        gradually.</p>
+        {% if rooms and rooms|length > 0 %}
+        <ol>
+                {% for room in rooms %}
+                {{ roomEntryTemplate.render(ProtocolKey, room, user) }}
+                {% endfor %}
+        </ol>
+        {% else %}
+        <p>There are no rooms yet!</p>
+        {% endif %}
+</section>
+{% endblock %}

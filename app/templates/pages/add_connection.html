@@ -1,0 +1,25 @@
+{% extends "pages/base.html" %}
+
+{% block headTags %}
+<title>Add a Friend | Cliques</title>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/home.css') }}">
+{% endblock %}
+
+{% block content %}
+<section id="addConnection">
+        <h2>Add a Friend</h2>
+        <form class="pad" name="newConnectionForm" action="/connections/add" method="POST">
+                {% if connectivityErrorMessage %}
+                <p class="formError">{{ connectivityErrorMessage }}</p>
+                {% endif %}
+                <label for="usernameField">Username:</label>
+                <input id="usernameField" name="alias" type="text" dir="auto" minlength="2" placeholder="your friend's username"
+                        required autofocus>
+                <div class="panel">
+                        <div class="flexibleSpace"></div>
+                        <button type="submit">Send Request</button>
+                        <div class="flexibleSpace"></div>
+                </div>
+        </form>
+</section>
+{% endblock %}

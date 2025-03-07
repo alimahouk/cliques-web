@@ -1,0 +1,63 @@
+{% extends "pages/base.html" %}
+
+{% block headTags %}
+<title>Cliques</title>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/home.css') }}">
+{% endblock %}
+
+{% block nav %}
+{% endblock %}
+
+{% block content %}
+
+{% import "elements/clique_list_entry.html" as cliqueEntryTemplate %}
+
+<section id="dashboard">
+        <h2>Dashboard</h2>
+        <form action="/connections/add" method="GET">
+                <div class="panel">
+                        <div class="flexibleSpace"></div>
+                        <button type="submit">Add a Friend</button>
+                        <div class="flexibleSpace"></div>
+                </div>
+        </form>
+        <ul>
+                <li id="connectionRequestsReceived">
+                        {% if connectionRequestsReceivedCount == 0 %}
+                        0 friend requests
+                        {% else %}
+                                <a href="/connections/requests">
+                                {{- connectionRequestsReceivedCount }} friend
+                                {% if connectionRequestsReceivedCount == 1 %}
+                                request
+                                {% else %}
+                                requests
+                                {%- endif -%}
+                                </a>
+                        {%- endif -%}
+                </li>
+                <li id="connections">
+                        <a href="/connections">
+                        {{- connectionCount }}
+                        {% if connectionCount == 1 %}
+                        friend
+                        {% else %}
+                        friends
+                        {%- endif -%}
+                        </a>
+                </li>
+        </ul>
+</section>
+<section id="cliques">
+        <h2>Friend Groups</h2>
+        {% if cliques and cliques|length > 0 %}
+        <ol>
+                {% for clique in cliques %}
+                {{ cliqueEntryTemplate.render(ProtocolKey, clique, user) }}
+                {% endfor %}
+        </ol>
+        {% else %}
+        <p>Once you connect with people you know, groups will appear here.</p>
+        {% endif %}
+</section>
+{% endblock %}

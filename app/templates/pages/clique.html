@@ -1,0 +1,54 @@
+{% extends "pages/base.html" %}
+
+{% set showLoginButton = True %}
+
+{% block headTags %}
+<title>Group | Cliques</title>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/home.css') }}">
+<meta name="description"
+        content="A service that automatically detects when you connect with people who all know each other and creates private spaces for you all to talk.">
+{% endblock %}
+
+{% block nav %}
+{% endblock %}
+
+{% block content %}
+{% import "elements/thread_list_entry.html" as threadEntryTemplate %}
+
+<section id="threads">
+        <h2>Group</h2>
+        <form action="/submit/thread" method="GET">
+                <input type="hidden" name="groupid" value="{{ cliqueID }}">
+                <div class="panel">
+                        <div class="flexibleSpace"></div>
+                        <button type="submit">Submit</button>
+                        <div class="flexibleSpace"></div>
+                </div>
+        </form>
+        <div class="members">
+                {%- for member in members -%}
+                <span class="member">@{{ member[ProtocolKey.ALIAS] }}</span>
+                {% endfor %}
+        </div>
+        <ol>
+                {% for thread in threads %}
+                {{ threadEntryTemplate.render(ProtocolKey, ThreadType, thread, user) }}
+                {% endfor %}
+        </ol>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript" src="{{ url_for('static', filename='js/time.js') }}"></script>
+<script type="text/javascript">
+        const timeTags = document.getElementsByTagName("time");
+        for (const tag of timeTags) {
+                const timeUTCStr = tag.getAttribute("datetime");
+                const timeStr = timestamp_str(timeUTCStr, false);
+                const timeStrRelative = timestamp_str(timeUTCStr, true);
+
+                tag.innerHTML = timeStrRelative;
+                tag.setAttribute("title", timeStr);
+        }
+</script>
+{% endblock %}
